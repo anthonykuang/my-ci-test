@@ -21,8 +21,8 @@ jobs:
         with:
           python-version: '3.9'
       - name: 安裝 Python 依賴
-        working-directory: ./python-app # ✨ 指定工作目錄 ✨
+        working-directory: ./python_app # ✨ 指定工作目錄 ✨
         run: pip install -r requirements.txt
       - name: 執行 Python 測試
-        working-directory: ./python-app # ✨ 指定工作目錄 ✨
+        working-directory: ./python_app # ✨ 指定工作目錄 ✨
         run: python -m unittest discover tests
