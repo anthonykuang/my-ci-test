@@ -1,0 +1,28 @@
+name: Python CI
+
+on:
+  push:
+    branches: [ main ]
+    paths:    # ✨ 只在 python-app 目錄下的檔案有變動時觸發 ✨
+      - 'python-app/**'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'python-app/**'
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 檢查 Python 程式碼
+        uses: actions/checkout@v4
+      - name: 設定 Python 環境
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.9'
+      - name: 安裝 Python 依賴
+        working-directory: ./python-app # ✨ 指定工作目錄 ✨
+        run: pip install -r requirements.txt
+      - name: 執行 Python 測試
+        working-directory: ./python-app # ✨ 指定工作目錄 ✨
+        run: python -m unittest discover tests

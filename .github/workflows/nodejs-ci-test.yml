@@ -1,0 +1,28 @@
+name: Node.js CI
+
+on:
+  push:
+    branches: [ main ]
+    paths:    # ✨ 只在 nodejs-app 目錄下的檔案有變動時觸發 ✨
+      - 'nodejs-app/**'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'nodejs-app/**'
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 檢查 Node.js 程式碼
+        uses: actions/checkout@v4
+      - name: 設定 Node.js 環境
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: 安裝 Node.js 依賴
+        working-directory: ./nodejs-app # ✨ 指定工作目錄 ✨
+        run: npm ci
+      - name: 執行 Node.js 測試
+        working-directory: ./nodejs-app # ✨ 指定工作目錄 ✨
+        run: npm test
