@@ -1,0 +1,23 @@
+{
+  "name": "my-ci-test",
+  "version": "1.0.0",
+  "description": "My first GitHub Actions CI test",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anthonykuang/my-ci-test.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/anthonykuang/my-ci-test/issues"
+  },
+  "homepage": "https://github.com/anthonykuang/my-ci-test#readme",
+  "devDependencies": {
+    "jest": "^30.0.5"
+  }
+}
