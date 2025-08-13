@@ -3,12 +3,12 @@ name: Node.js CI
 on:
   push:
     branches: [ main ]
-    paths:    # ✨ 只在 nodejs-app 目錄下的檔案有變動時觸發 ✨
-      - 'nodejs-app/**'
+    paths:    # ✨ 只在 nodejs_app 目錄下的檔案有變動時觸發 ✨
+      - 'nodejs_app/**'
   pull_request:
     branches: [ main ]
     paths:
-      - 'nodejs-app/**'
+      - 'nodejs_app/**'
 
 jobs:
   build-and-test:

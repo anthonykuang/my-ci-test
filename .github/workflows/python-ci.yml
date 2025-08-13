@@ -3,12 +3,12 @@ name: Python CI
 on:
   push:
     branches: [ main ]
-    paths:    # ✨ 只在 python-app 目錄下的檔案有變動時觸發 ✨
-      - 'python-app/**'
+    paths:    # ✨ 只在 python_app 目錄下的檔案有變動時觸發 ✨
+      - 'python_app/**'
   pull_request:
     branches: [ main ]
     paths:
-      - 'python-app/**'
+      - 'python_app/**'
 
 jobs:
   build-and-test:
