@@ -51,6 +51,8 @@ jobs:
       pages: write    # 通常也需要 pages 寫入權限來部署
 
     steps:
+      - name: 設定 GitHub Pages
+        uses: actions/configure-pages@v4
       - name: 下載部署產物
         uses: actions/download-artifact@v4 # ✨ 下載上個作業上傳的檔案 ✨
         with:
@@ -63,6 +65,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }} # GITHUB_TOKEN 是 GitHub 自動提供的
           # content_directory: ./_site/ # 部署的內容目錄，actions/deploy-pages@v4 預設會找這個
+          content_directory: ./_site
 
       - name: 檢查部署 URL
         run: echo "部署已完成，請訪問：${{ steps.deployment.outputs.page_url }}"
