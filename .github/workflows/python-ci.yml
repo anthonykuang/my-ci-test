@@ -46,6 +46,9 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }} # 部署後的 URL
+    permissions: # ✨ 在這裡新增這個區塊 ✨
+      id-token: write # 為 GITHUB_TOKEN 授予 id-token 寫入權限
+      pages: write    # 通常也需要 pages 寫入權限來部署
 
     steps:
       - name: 下載部署產物
