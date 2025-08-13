@@ -31,12 +31,15 @@ jobs:
         working-directory: ./python_app
         run: python src/generator.py
       # ✨ 新增：上傳構建產物 (HTML 檔案) 以便部署作業使用 ✨
-      - name: 上傳部署產物
-        uses: actions/upload-artifact@v4 # 使用 actions/upload-artifact 上傳檔案
+
+      - name: 檢查輸出檔案
+        run: ls -R ./python_app/output
+
+      - name: 上傳部署產物 (給 Pages)
+        uses: actions/upload-pages-artifact@v3
         with:
-          name: github-pages
-          path: ./python_app/output/ # 上傳 python_app/output/ 目錄下的所有內容
-          retention-days: 1 # 構建產物保留一天，可選
+          path: ./python_app/output
+
 
   # CD 階段：部署到 GitHub Pages
   deploy:
@@ -54,11 +57,11 @@ jobs:
       - name: 設定 GitHub Pages
         uses: actions/configure-pages@v4
 
-      - name: 下載部署產物
-        uses: actions/download-artifact@v4 # ✨ 下載上個作業上傳的檔案 ✨
-        with:
-          name: github-pages
-          path: ./_site/ # 下載到一個臨時目錄，GitHub Pages 會從這裡部署
+      # - name: 下載部署產物
+      #   uses: actions/download-artifact@v4 # ✨ 下載上個作業上傳的檔案 ✨
+      #   with:
+      #     name: github-pages
+      #     path: ./_site/ # 下載到一個臨時目錄，GitHub Pages 會從這裡部署
       - name: 部署到 GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
