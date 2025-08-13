@@ -34,7 +34,7 @@ jobs:
       - name: 上傳部署產物
         uses: actions/upload-artifact@v4 # 使用 actions/upload-artifact 上傳檔案
         with:
-          name: python-report-html
+          name: github-pages
           path: python_app/output/ # 上傳 python_app/output/ 目錄下的所有內容
           retention-days: 1 # 構建產物保留一天，可選
 
@@ -54,7 +54,7 @@ jobs:
       - name: 下載部署產物
         uses: actions/download-artifact@v4 # ✨ 下載上個作業上傳的檔案 ✨
         with:
-          name: python-report-html
+          name: github-pages
           path: ./_site/ # 下載到一個臨時目錄，GitHub Pages 會從這裡部署
 
       - name: 部署到 GitHub Pages
