@@ -1,0 +1,26 @@
+name: Node.js CI
+
+on:
+  push:
+    branches: [ main ] # 當有程式碼推送到 main 分支時觸發
+  pull_request:
+    branches: [ main ] # 當有拉取請求到 main 分支時觸發
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest # 在 Ubuntu Linux 環境上運行
+
+    steps:
+    - name: 檢查程式碼
+      uses: actions/checkout@v4 # 使用 actions/checkout@v4 來獲取你的程式碼
+
+    - name: 設定 Node.js 環境
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20' # 指定使用 Node.js 20 版本
+
+    - name: 安裝依賴
+      run: npm ci # 使用 npm ci 進行乾淨安裝，根據 package-lock.json 安裝依賴
+
+    - name: 執行測試
+      run: npm test # 運行你的測試指令
