@@ -35,7 +35,7 @@ jobs:
         uses: actions/upload-artifact@v4 # 使用 actions/upload-artifact 上傳檔案
         with:
           name: github-pages
-          path: python_app/output/ # 上傳 python_app/output/ 目錄下的所有內容
+          path: python_app/output/index.html # 上傳 python_app/output/ 目錄下的所有內容
           retention-days: 1 # 構建產物保留一天，可選
 
   # CD 階段：部署到 GitHub Pages
