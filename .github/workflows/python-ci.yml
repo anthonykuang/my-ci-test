@@ -54,14 +54,14 @@ jobs:
       - name: 設定 GitHub Pages
         uses: actions/configure-pages@v4
 
+      - name: 下載部署產物
+        uses: actions/download-artifact@v4 # ✨ 下載上個作業上傳的檔案 ✨
+        with:
+          name: github-pages
+          path: ./_site/ # 下載到一個臨時目錄，GitHub Pages 會從這裡部署
       - name: 部署到 GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-      # - name: 下載部署產物
-      #   uses: actions/download-artifact@v4 # ✨ 下載上個作業上傳的檔案 ✨
-      #   with:
-      #     name: github-pages
-      #     path: ./_site/ # 下載到一個臨時目錄，GitHub Pages 會從這裡部署
 
       # - name: 部署到 GitHub Pages
       #   id: deployment
