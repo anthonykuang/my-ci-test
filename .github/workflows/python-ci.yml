@@ -39,30 +39,30 @@ jobs:
           retention-days: 1 # 構建產物保留一天，可選
 
   # CD 階段：部署到 GitHub Pages
-  # deploy:
-  #   needs: build-and-test # ✨ 確保在 CI 成功後才執行部署 ✨
-  #   if: github.ref == 'refs/heads/main' # ✨ 僅在推送到 main 分支時才部署 ✨
-  #   runs-on: ubuntu-latest
-  #   environment:
-  #     name: github-pages
-  #     url: ${{ steps.deployment.outputs.page_url }} # 部署後的 URL
-  #   permissions: # ✨ 在這裡新增這個區塊 ✨
-  #     id-token: write # 為 GITHUB_TOKEN 授予 id-token 寫入權限
-  #     pages: write    # 通常也需要 pages 寫入權限來部署
+  deploy:
+    needs: build-and-test # ✨ 確保在 CI 成功後才執行部署 ✨
+    if: github.ref == 'refs/heads/main' # ✨ 僅在推送到 main 分支時才部署 ✨
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }} # 部署後的 URL
+    permissions: # ✨ 在這裡新增這個區塊 ✨
+      id-token: write # 為 GITHUB_TOKEN 授予 id-token 寫入權限
+      pages: write    # 通常也需要 pages 寫入權限來部署
 
-  #   steps:
-  #     - name: 下載部署產物
-  #       uses: actions/download-artifact@v4 # ✨ 下載上個作業上傳的檔案 ✨
-  #       with:
-  #         name: github-pages
-  #         path: ./_site/ # 下載到一個臨時目錄，GitHub Pages 會從這裡部署
+    steps:
+      - name: 下載部署產物
+        uses: actions/download-artifact@v4 # ✨ 下載上個作業上傳的檔案 ✨
+        with:
+          name: github-pages
+          path: ./_site/ # 下載到一個臨時目錄，GitHub Pages 會從這裡部署
 
-  #     - name: 部署到 GitHub Pages
-  #       id: deployment
-  #       uses: actions/deploy-pages@v4 # ✨ 使用官方 Action 部署到 GitHub Pages ✨
-  #       with:
-  #         token: ${{ secrets.GITHUB_TOKEN }} # GITHUB_TOKEN 是 GitHub 自動提供的
-  #         # content_directory: ./_site/ # 部署的內容目錄，actions/deploy-pages@v4 預設會找這個
+      - name: 部署到 GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4 # ✨ 使用官方 Action 部署到 GitHub Pages ✨
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }} # GITHUB_TOKEN 是 GitHub 自動提供的
+          # content_directory: ./_site/ # 部署的內容目錄，actions/deploy-pages@v4 預設會找這個
 
-  #     - name: 檢查部署 URL
-  #       run: echo "部署已完成，請訪問：${{ steps.deployment.outputs.page_url }}"
+      - name: 檢查部署 URL
+        run: echo "部署已完成，請訪問：${{ steps.deployment.outputs.page_url }}"
