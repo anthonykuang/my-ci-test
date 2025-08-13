@@ -13,6 +13,7 @@ class TestCalculator(unittest.TestCase):
         self.assertEqual(subtract(6, 3), 3)
         self.assertEqual(subtract(0, 3), -3)
         self.assertEqual(subtract(7, 5), 2)
+        self.assertEqual(subtract(7, 5), 2)
 
 if __name__ == '__main__':
     unittest.main()
