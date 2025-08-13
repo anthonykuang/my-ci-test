@@ -1,9 +1,9 @@
-name: Python CI
+name: Python CI/CD
 
 on:
   push:
     branches: [ main ]
-    paths:    # ✨ 只在 python_app 目錄下的檔案有變動時觸發 ✨
+    paths:
       - 'python_app/**'
   pull_request:
     branches: [ main ]
@@ -21,8 +21,45 @@ jobs:
         with:
           python-version: '3.9'
       - name: 安裝 Python 依賴
-        working-directory: ./python_app # ✨ 指定工作目錄 ✨
+        working-directory: ./python_app # ✨ 工作目錄為 python_app ✨
         run: pip install -r requirements.txt
       - name: 執行 Python 測試
-        working-directory: ./python_app # ✨ 指定工作目錄 ✨
-        run: python -m unittest discover tests
+        working-directory: ./python_app # ✨ 工作目錄為 python_app ✨
+        run: python -m unittest discover tests # 從 python_app 目錄開始尋找 tests
+        # ✨ 新增：生成部署所需的 HTML 檔案 ✨
+      - name: 生成報告 HTML
+        working-directory: ./python_app
+        run: python src/generator.pycd
+      # ✨ 新增：上傳構建產物 (HTML 檔案) 以便部署作業使用 ✨
+      - name: 上傳部署產物
+        uses: actions/upload-artifact@v4 # 使用 actions/upload-artifact 上傳檔案
+        with:
+          name: python-report-html
+          path: python_app/output/ # 上傳 python_app/output/ 目錄下的所有內容
+          retention-days: 1 # 構建產物保留一天，可選
+
+  # CD 階段：部署到 GitHub Pages
+  deploy:
+    needs: build-and-test # ✨ 確保在 CI 成功後才執行部署 ✨
+    if: github.ref == 'refs/heads/main' # ✨ 僅在推送到 main 分支時才部署 ✨
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }} # 部署後的 URL
+
+    steps:
+      - name: 下載部署產物
+        uses: actions/download-artifact@v4 # ✨ 下載上個作業上傳的檔案 ✨
+        with:
+          name: python-report-html
+          path: ./_site/ # 下載到一個臨時目錄，GitHub Pages 會從這裡部署
+
+      - name: 部署到 GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4 # ✨ 使用官方 Action 部署到 GitHub Pages ✨
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }} # GITHUB_TOKEN 是 GitHub 自動提供的
+          # content_directory: ./_site/ # 部署的內容目錄，actions/deploy-pages@v4 預設會找這個
+
+      - name: 檢查部署 URL
+        run: echo "部署已完成，請訪問：${{ steps.deployment.outputs.page_url }}"
